@@ -1,0 +1,101 @@
+{
+  "theme": "dark",
+  "archetype": "5 (Jewel & Luxury)",
+  "colors": {
+    "background": "#0A0A0A",
+    "surface": "#141414",
+    "surface_hover": "#1C1C1C",
+    "text_primary": "#F8F6F2",
+    "text_secondary": "rgba(248, 246, 242, 0.6)",
+    "accent_gold": "#C6A96B",
+    "accent_gold_hover": "#E0C385",
+    "border_subtle": "rgba(198, 169, 107, 0.15)",
+    "border_active": "rgba(198, 169, 107, 0.4)",
+    "success": "#4CAF50",
+    "warning": "#FF9800",
+    "danger": "#F44336"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Playfair Display, serif",
+      "body": "Manrope, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none font-light",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-none font-normal",
+      "h3": "text-xl sm:text-2xl tracking-tight font-medium",
+      "h4": "text-lg sm:text-xl font-medium",
+      "body": "text-base leading-relaxed font-light",
+      "small": "text-sm uppercase tracking-[0.2em]"
+    }
+  },
+  "spacing_and_layout": {
+    "general": "Generous spacing. Use p-6, p-8, p-12.",
+    "grid": "Control Room Grid but with more breathing room. gap-6 or gap-8.",
+    "card_padding": "p-8",
+    "border_radius": "rounded-none or max rounded-sm (2px) for a sharp, tailored luxury feel.",
+    "alignment": "Left-align dense data, center-align hero elements."
+  },
+  "surfaces_and_borders": {
+    "cards": "Flat background (#141414) with a subtle 1px border (border-subtle). No drop shadow. Hover effect: slight border brighten (border-active).",
+    "header": "Crystal Glass variant or Solid #0A0A0A with a 1px bottom border.",
+    "buttons": "Primary buttons: Gold background (#C6A96B) with Black text. Secondary buttons: Transparent background with Gold border."
+  },
+  "animations": {
+    "general": "Subtle, smooth, and discreet. No bouncy or playful animations.",
+    "hover": "Fade transitions on borders and text colors. Very slight background color shifts.",
+    "transitions": "duration-500 ease-out"
+  },
+  "components": {
+    "navigation": "Side or top nav with clear hierarchy. Logo in Playfair Display. Links use Manrope.",
+    "cards": "Property and Vendor cards should use images prominently. Use bg-black/40 overlay to ensure text contrast.",
+    "tables": "Staff and Vendor tables. Left aligned text. Generous row padding (py-4). Subtle border-bottom for rows.",
+    "forms": "Inputs with flat black background, subtle gold bottom border. Focus state thickens gold border. No outline.",
+    "ai_assistant": "Floating or embedded chat interface. Extremely minimal. 'Neapolitan Intelligence' placeholder. Quiet and discreet."
+  },
+  "media": {
+    "estates": [
+      {
+        "url": "https://images.pexels.com/photos/13620067/pexels-photo-13620067.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Modern mansion with poolside view at sunset",
+        "category": "estate_image"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1758612853656-def5033bccb5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBtb2Rlcm4lMjBtYW5zaW9uJTIwZXh0ZXJpb3J8ZW58MHx8fHwxNzc1MjU0OTM4fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Modern house illuminated at night",
+        "category": "estate_image"
+      },
+      {
+        "url": "https://images.pexels.com/photos/7031607/pexels-photo-7031607.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Contemporary residential house exterior",
+        "category": "estate_image"
+      }
+    ],
+    "lifestyle": [
+      {
+        "url": "https://images.unsplash.com/photo-1768346564210-f382cdf18375?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwyfHxwcml2YXRlJTIwamV0JTIwaW50ZXJpb3IlMjBsdXh1cnl8ZW58MHx8fHwxNzc1MjU0OTM4fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Luxurious private jet interior",
+        "category": "event_image"
+      },
+      {
+        "url": "https://images.pexels.com/photos/14914173/pexels-photo-14914173.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Elegant interior of a private jet",
+        "category": "event_image"
+      }
+    ],
+    "staff": [
+      {
+        "url": "https://images.unsplash.com/photo-1746558780824-05ebbeda3e7d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwyfHxidXRsZXIlMjBzZXJ2aW5nJTIwbHV4dXJ5fGVufDB8fHx8MTc3NTI1NDkzOHww&ixlib=rb-4.1.0&q=85",
+        "description": "Pouring a drink for a guest",
+        "category": "staff_image"
+      }
+    ]
+  },
+  "icons": {
+    "library": "lucide-react",
+    "stroke_width": 1.5,
+    "size": 20
+  },
+  "instructions_to_main_agent": "1. Set background to #0A0A0A and text to #F8F6F2 globally. 2. Use Playfair Display for headers and Manrope for body text. 3. Add 1px subtle gold borders (#C6A96B at 15% opacity) for cards and sections. 4. Implement all UI elements with a flat, sharp, minimalist aesthetic. No heavy dropshadows or extreme rounded corners. 5. Include data-testid attributes on all interactive elements. 6. The vibe is 'quiet luxury' — highly functional but looks like a million dollars."
+}
