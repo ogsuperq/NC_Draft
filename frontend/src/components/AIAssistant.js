@@ -44,7 +44,7 @@ const AIAssistant = ({ onClose }) => {
     <div 
       data-testid="ai-assistant-panel"
       className="fixed right-0 top-0 h-full w-96 luxury-card border-l shadow-2xl flex flex-col fade-in"
-      style={{ background: '#0A0A0A', borderColor: 'rgba(198, 169, 107, 0.4)' }}
+      style={{ background: '#0A0A0A', borderColor: 'rgba(198, 169, 107, 0.4)', zIndex: 9999 }}
     >
       {/* Header */}
       <div className="p-6 border-b" style={{ borderColor: 'rgba(198, 169, 107, 0.15)' }}>
