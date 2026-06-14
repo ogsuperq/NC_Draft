@@ -36,13 +36,6 @@ const ComingSoon = () => {
       </header>
 
       <section className="hero" id="top">
-        <div className="hero-architecture" aria-hidden="true">
-          <span className="architecture-line line-one" />
-          <span className="architecture-line line-two" />
-          <span className="architecture-line line-three" />
-          <span className="architecture-glow" />
-        </div>
-
         <div className="hero-content">
           <p className="eyebrow reveal reveal-one">Private Estate Office · Naples, Florida</p>
           <h1 className="reveal reveal-two">
