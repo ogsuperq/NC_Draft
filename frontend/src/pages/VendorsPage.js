@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Search, Star, Phone } from 'lucide-react';
+import { previewVendors } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -16,6 +17,12 @@ const VendorsPage = () => {
   }, []);
 
   const fetchVendors = async () => {
+    if (!BACKEND_URL) {
+      setVendors(previewVendors);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(`${API}/vendors`);
       setVendors(response.data);

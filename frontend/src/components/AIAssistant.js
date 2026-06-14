@@ -23,6 +23,15 @@ const AIAssistant = ({ onClose }) => {
     setInput('');
     setLoading(true);
 
+    if (!BACKEND_URL) {
+      setMessages(prev => [...prev, {
+        type: 'ai',
+        content: 'Request acknowledged. The preview is operating in private demonstration mode.'
+      }]);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(`${API}/ai/command`, { command: input });
       setMessages(prev => [...prev, { type: 'ai', content: response.data.response }]);

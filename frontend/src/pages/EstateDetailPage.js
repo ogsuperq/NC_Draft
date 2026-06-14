@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, MapPin, Home as HomeIcon, AlertCircle, TrendingUp } from 'lucide-react';
+import { previewEstates, previewStaff } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -12,11 +13,15 @@ const EstateDetailPage = () => {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchEstateDetails();
-  }, [id]);
+  const fetchEstateDetails = useCallback(async () => {
+    if (!BACKEND_URL) {
+      const previewEstate = previewEstates.find((item) => item.id === id);
+      setEstate(previewEstate || null);
+      setStaff(previewStaff.filter((member) => member.estate === previewEstate?.name));
+      setLoading(false);
+      return;
+    }
 
-  const fetchEstateDetails = async () => {
     try {
       const [estateRes, staffRes] = await Promise.all([
         axios.get(`${API}/estates/${id}`),
@@ -29,7 +34,11 @@ const EstateDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchEstateDetails();
+  }, [fetchEstateDetails]);
 
   if (loading) {
     return (
@@ -66,7 +75,7 @@ const EstateDetailPage = () => {
         
         {/* Back Button */}
         <Link 
-          to="/estates"
+          to="/app-preview/estates"
           data-testid="back-to-estates-button"
           className="absolute top-8 left-8 flex items-center space-x-2 luxury-button-secondary px-4 py-2 rounded-sm"
         >

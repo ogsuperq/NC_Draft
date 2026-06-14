@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { MapPin, AlertCircle, TrendingUp } from 'lucide-react';
+import { previewEstates } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -16,6 +17,12 @@ const EstatesPage = () => {
   }, []);
 
   const fetchEstates = async () => {
+    if (!BACKEND_URL) {
+      setEstates(previewEstates);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(`${API}/estates`);
       setEstates(response.data);
@@ -81,7 +88,7 @@ const EstatesPage = () => {
         {filteredEstates.map((estate) => (
           <Link
             key={estate.id}
-            to={`/estates/${estate.id}`}
+            to={`/app-preview/estates/${estate.id}`}
             data-testid={`estate-item-${estate.id}`}
             className="group"
           >

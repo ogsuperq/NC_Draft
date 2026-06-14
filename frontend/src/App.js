@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import AuthPage from './pages/AuthPage';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import DashboardLayout from './components/DashboardLayout';
+import ComingSoon from './pages/ComingSoon';
 import Dashboard from './pages/Dashboard';
 import EstatesPage from './pages/EstatesPage';
 import EstateDetailPage from './pages/EstateDetailPage';
@@ -11,19 +11,14 @@ import LifestylePage from './pages/LifestylePage';
 import MessagingPage from './pages/MessagingPage';
 import SettingsPage from './pages/SettingsPage';
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-  const [theme, setTheme] = useState('dark');
+const previewUser = {
+  name: 'Preview Guest',
+  email: 'preview@neapolitanconcierge.com',
+  role: 'Estate Director',
+};
 
-  useEffect(() => {
-    const token = localStorage.getItem('neapolitan_token');
-    const savedUser = localStorage.getItem('neapolitan_user');
-    if (token && savedUser) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
+function AppPreview() {
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     if (theme === 'light') {
@@ -31,61 +26,40 @@ function App() {
     } else {
       document.body.classList.remove('light');
     }
+
+    return () => document.body.classList.remove('light');
   }, [theme]);
 
-  const handleLogin = (userData, token) => {
-    setIsAuthenticated(true);
-    setUser(userData);
-    localStorage.setItem('neapolitan_token', token);
-    localStorage.setItem('neapolitan_user', JSON.stringify(userData));
-  };
+  return (
+    <DashboardLayout
+      user={previewUser}
+      onLogout={() => window.location.assign('/')}
+      theme={theme}
+      setTheme={setTheme}
+      basePath="/app-preview"
+    >
+      <Routes>
+        <Route index element={<Dashboard />} />
+        <Route path="estates" element={<EstatesPage />} />
+        <Route path="estates/:id" element={<EstateDetailPage />} />
+        <Route path="staff" element={<StaffPage />} />
+        <Route path="vendors" element={<VendorsPage />} />
+        <Route path="lifestyle" element={<LifestylePage />} />
+        <Route path="messages" element={<MessagingPage />} />
+        <Route path="settings" element={<SettingsPage user={previewUser} />} />
+        <Route path="*" element={<Navigate to="/app-preview" replace />} />
+      </Routes>
+    </DashboardLayout>
+  );
+}
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    localStorage.removeItem('neapolitan_token');
-    localStorage.removeItem('neapolitan_user');
-  };
-
+function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/auth"
-          element={
-            !isAuthenticated ? (
-              <AuthPage onLogin={handleLogin} />
-            ) : (
-              <Navigate to="/" replace />
-            )
-          }
-        />
-        <Route
-          path="/*"
-          element={
-            isAuthenticated ? (
-              <DashboardLayout 
-                user={user} 
-                onLogout={handleLogout}
-                theme={theme}
-                setTheme={setTheme}
-              >
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/estates" element={<EstatesPage />} />
-                  <Route path="/estates/:id" element={<EstateDetailPage />} />
-                  <Route path="/staff" element={<StaffPage />} />
-                  <Route path="/vendors" element={<VendorsPage />} />
-                  <Route path="/lifestyle" element={<LifestylePage />} />
-                  <Route path="/messages" element={<MessagingPage />} />
-                  <Route path="/settings" element={<SettingsPage user={user} />} />
-                </Routes>
-              </DashboardLayout>
-            ) : (
-              <Navigate to="/auth" replace />
-            )
-          }
-        />
+        <Route path="/" element={<ComingSoon />} />
+        <Route path="/app-preview/*" element={<AppPreview />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

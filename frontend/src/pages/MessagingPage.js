@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Send, User } from 'lucide-react';
+import { previewMessages } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -15,6 +16,12 @@ const MessagingPage = () => {
   }, []);
 
   const fetchMessages = async () => {
+    if (!BACKEND_URL) {
+      setMessages(previewMessages);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(`${API}/messages`);
       setMessages(response.data);
@@ -30,14 +37,19 @@ const MessagingPage = () => {
 
     try {
       const messageData = {
+        id: `${Date.now()}`,
         from_user: 'Alexander Sterling',
         to_user: 'Victoria Chen',
         content: newMessage,
         timestamp: new Date().toISOString()
       };
 
-      const response = await axios.post(`${API}/messages`, messageData);
-      setMessages([...messages, response.data]);
+      if (!BACKEND_URL) {
+        setMessages([...messages, messageData]);
+      } else {
+        const response = await axios.post(`${API}/messages`, messageData);
+        setMessages([...messages, response.data]);
+      }
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);

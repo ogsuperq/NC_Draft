@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Calendar as CalendarIcon, Plus, Plane, Users as GuestsIcon, Star } from 'lucide-react';
+import { previewEvents } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -15,6 +16,12 @@ const LifestylePage = () => {
   }, []);
 
   const fetchEvents = async () => {
+    if (!BACKEND_URL) {
+      setEvents([...previewEvents].sort((a, b) => new Date(a.date) - new Date(b.date)));
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(`${API}/events`);
       setEvents(response.data.sort((a, b) => new Date(a.date) - new Date(b.date)));

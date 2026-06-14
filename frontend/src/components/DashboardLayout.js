@@ -3,18 +3,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { Building2, LayoutDashboard, Home, Users, Briefcase, Calendar, MessageSquare, Settings, LogOut, Sun, Moon, Sparkles } from 'lucide-react';
 import AIAssistant from './AIAssistant';
 
-const DashboardLayout = ({ children, user, onLogout, theme, setTheme }) => {
+const DashboardLayout = ({ children, user, onLogout, theme, setTheme, basePath = '' }) => {
   const location = useLocation();
   const [showAI, setShowAI] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Estates', path: '/estates', icon: Home },
-    { name: 'Staff', path: '/staff', icon: Users },
-    { name: 'Vendors', path: '/vendors', icon: Briefcase },
-    { name: 'Lifestyle', path: '/lifestyle', icon: Calendar },
-    { name: 'Messages', path: '/messages', icon: MessageSquare },
-    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: 'Dashboard', path: basePath, icon: LayoutDashboard },
+    { name: 'Estates', path: `${basePath}/estates`, icon: Home },
+    { name: 'Staff', path: `${basePath}/staff`, icon: Users },
+    { name: 'Vendors', path: `${basePath}/vendors`, icon: Briefcase },
+    { name: 'Lifestyle', path: `${basePath}/lifestyle`, icon: Calendar },
+    { name: 'Messages', path: `${basePath}/messages`, icon: MessageSquare },
+    { name: 'Settings', path: `${basePath}/settings`, icon: Settings },
   ];
 
   return (

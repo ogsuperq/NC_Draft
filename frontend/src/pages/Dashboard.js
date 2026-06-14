@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Home, Users, Briefcase, AlertCircle, TrendingUp, Calendar, Sparkles } from 'lucide-react';
+import { Home, Users, AlertCircle, Calendar, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { previewEstates, previewEvents, previewStaff } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -18,6 +19,14 @@ const Dashboard = () => {
   }, []);
 
   const fetchDashboardData = async () => {
+    if (!BACKEND_URL) {
+      setEstates(previewEstates);
+      setStaff(previewStaff);
+      setEvents(previewEvents);
+      setLoading(false);
+      return;
+    }
+
     try {
       const [estatesRes, staffRes, eventsRes] = await Promise.all([
         axios.get(`${API}/estates`),
@@ -108,7 +117,7 @@ const Dashboard = () => {
         <div data-testid="occupied-estates-section" className="luxury-card rounded-sm p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-heading font-normal text-luxury-white">Currently Occupied</h2>
-            <Link to="/estates" className="text-sm text-luxury-gold hover:text-luxury-gold-hover luxury-transition">
+            <Link to="/app-preview/estates" className="text-sm text-luxury-gold hover:text-luxury-gold-hover luxury-transition">
               View All
             </Link>
           </div>
@@ -117,7 +126,7 @@ const Dashboard = () => {
               occupiedEstates.map((estate) => (
                 <Link 
                   key={estate.id} 
-                  to={`/estates/${estate.id}`}
+                  to={`/app-preview/estates/${estate.id}`}
                   data-testid={`estate-card-${estate.id}`}
                   className="block group"
                 >
@@ -150,7 +159,7 @@ const Dashboard = () => {
         <div data-testid="upcoming-events-section" className="luxury-card rounded-sm p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-heading font-normal text-luxury-white">Upcoming Events</h2>
-            <Link to="/lifestyle" className="text-sm text-luxury-gold hover:text-luxury-gold-hover luxury-transition">
+            <Link to="/app-preview/lifestyle" className="text-sm text-luxury-gold hover:text-luxury-gold-hover luxury-transition">
               View All
             </Link>
           </div>
@@ -183,7 +192,7 @@ const Dashboard = () => {
       <div data-testid="staff-activity-section" className="luxury-card rounded-sm p-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-heading font-normal text-luxury-white">Staff Activity</h2>
-          <Link to="/staff" className="text-sm text-luxury-gold hover:text-luxury-gold-hover luxury-transition">
+          <Link to="/app-preview/staff" className="text-sm text-luxury-gold hover:text-luxury-gold-hover luxury-transition">
             Manage Staff
           </Link>
         </div>

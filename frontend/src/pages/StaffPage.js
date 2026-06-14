@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Search, User } from 'lucide-react';
+import { previewStaff } from '../lib/previewData';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -16,6 +17,12 @@ const StaffPage = () => {
   }, []);
 
   const fetchStaff = async () => {
+    if (!BACKEND_URL) {
+      setStaff(previewStaff);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(`${API}/staff`);
       setStaff(response.data);
