@@ -58,3 +58,5 @@ memory/
 # Other
 .cache/
 *.pid
+.emergent/
+.gitconfig

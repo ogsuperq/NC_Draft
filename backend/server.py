@@ -9,7 +9,6 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
-from emergentintegrations.llm.chat import LlmChat, UserMessage
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -193,37 +192,19 @@ async def send_message(msg: Message):
 
 @api_router.post("/ai/suggest")
 async def ai_suggest(req: AISuggestionRequest):
-    try:
-        chat = LlmChat(
-            api_key=os.environ['EMERGENT_LLM_KEY'],
-            session_id=f"suggest_{uuid.uuid4()}",
-            system_message="You are Neapolitan Intelligence, an ultra-discreet AI assistant for ultra-high-net-worth individuals. Provide brief, elegant suggestions for estate management, staff coordination, and lifestyle optimization. Be concise and sophisticated."
-        ).with_model("openai", "gpt-5.2")
-        
-        user_message = UserMessage(text=f"Based on this context: {req.context}. Provide 2-3 smart, actionable suggestions.")
-        response = await chat.send_message(user_message)
-        
-        return {"suggestions": response}
-    except Exception as e:
-        logging.error(f"AI suggest error: {e}")
-        return {"suggestions": "Optimize estate staffing levels based on seasonal occupancy patterns."}
+    return {
+        "suggestions": (
+            "Review seasonal staffing and residence-readiness plans before the next "
+            "scheduled arrival."
+        )
+    }
 
 @api_router.post("/ai/command")
 async def ai_command(req: AICommandRequest):
-    try:
-        chat = LlmChat(
-            api_key=os.environ['EMERGENT_LLM_KEY'],
-            session_id=f"command_{uuid.uuid4()}",
-            system_message="You are Neapolitan Intelligence. Process natural language commands for estate management. Interpret user intent and provide structured responses. Be ultra-brief and precise."
-        ).with_model("openai", "gpt-5.2")
-        
-        user_message = UserMessage(text=f"Command: {req.command}. Interpret and respond with action confirmation.")
-        response = await chat.send_message(user_message)
-        
-        return {"response": response, "action": "processed"}
-    except Exception as e:
-        logging.error(f"AI command error: {e}")
-        return {"response": "Command acknowledged. Processing request.", "action": "processed"}
+    return {
+        "response": "Command acknowledged in demonstration mode.",
+        "action": "processed",
+    }
 
 app.include_router(api_router)
 
