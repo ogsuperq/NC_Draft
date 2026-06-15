@@ -27,6 +27,7 @@ const ComingSoon = () => {
       const response = await fetch('/api/inquiry', {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -37,10 +38,15 @@ const ComingSoon = () => {
         }),
       });
 
-      const result = await response.json().catch(() => ({}));
+      const contentType = response.headers.get('content-type') || '';
+      const isJsonResponse = contentType.includes('application/json');
+      const result = isJsonResponse ? await response.json() : {};
 
-      if (!response.ok) {
-        throw new Error(result.error || 'We could not deliver your inquiry.');
+      if (!response.ok || result.success !== true) {
+        throw new Error(
+          result.error
+          || 'The private inquiry service could not be reached. Please try again shortly.'
+        );
       }
 
       form.reset();
