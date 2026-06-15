@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDown, ArrowUpRight, Check, LockKeyhole } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Check, LoaderCircle, LockKeyhole } from 'lucide-react';
 import './ComingSoon.css';
 
 const services = [
@@ -12,11 +12,45 @@ const services = [
 ];
 
 const ComingSoon = () => {
-  const [submitted, setSubmitted] = useState(false);
+  const [formStatus, setFormStatus] = useState('idle');
+  const [formError, setFormError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitted(true);
+    setFormStatus('submitting');
+    setFormError('');
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          interest: formData.get('interest'),
+          message: formData.get('message'),
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || 'We could not deliver your inquiry.');
+      }
+
+      form.reset();
+      setFormStatus('success');
+    } catch (error) {
+      setFormError(
+        error.message || 'We could not deliver your inquiry. Please try again in a moment.'
+      );
+      setFormStatus('error');
+    }
   };
 
   return (
@@ -114,12 +148,15 @@ const ComingSoon = () => {
           <p>Membership is limited. Introductions are considered personally.</p>
         </div>
 
-        {submitted ? (
+        {formStatus === 'success' ? (
           <div className="form-success" role="status">
             <Check size={22} strokeWidth={1.3} />
             <div>
               <h3>Thank you.</h3>
-              <p>Your inquiry has been received. Our private office will be in touch.</p>
+              <p>
+                Your private inquiry has been received. A member of our office will
+                respond with discretion.
+              </p>
             </div>
           </div>
         ) : (
@@ -134,7 +171,7 @@ const ComingSoon = () => {
             </label>
             <label className="form-wide">
               <span>How may we assist?</span>
-              <select name="interest" defaultValue="">
+              <select name="interest" defaultValue="" required>
                 <option value="" disabled>Select an area of interest</option>
                 <option>Estate Management</option>
                 <option>Lifestyle Management</option>
@@ -142,9 +179,36 @@ const ComingSoon = () => {
                 <option>Private Consultation</option>
               </select>
             </label>
-            <button className="button button-primary form-wide" type="submit">
-              Submit Private Inquiry
-              <ArrowUpRight size={16} strokeWidth={1.4} />
+            <label className="form-wide">
+              <span>Message</span>
+              <textarea
+                name="message"
+                rows="4"
+                placeholder="Share a brief note about how we may assist."
+                required
+              />
+            </label>
+            {formStatus === 'error' && (
+              <p className="form-error form-wide" role="alert">
+                {formError}
+              </p>
+            )}
+            <button
+              className="button button-primary form-wide"
+              type="submit"
+              disabled={formStatus === 'submitting'}
+            >
+              {formStatus === 'submitting' ? (
+                <>
+                  Sending Private Inquiry
+                  <LoaderCircle className="form-spinner" size={16} strokeWidth={1.4} />
+                </>
+              ) : (
+                <>
+                  Submit Private Inquiry
+                  <ArrowUpRight size={16} strokeWidth={1.4} />
+                </>
+              )}
             </button>
           </form>
         )}
