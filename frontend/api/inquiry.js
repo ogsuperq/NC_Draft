@@ -1,6 +1,6 @@
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 const SUBJECT = 'New Private Inquiry — Neapolitan Concierge';
-const FROM_EMAIL = 'Neapolitan Concierge <onboarding@resend.dev>';
+const FROM_EMAIL = 'Neapolitan Concierge <inquiries@neapolitanconcierge.com>';
 
 const escapeHtml = (value) => String(value)
   .replaceAll('&', '&amp;')
@@ -14,6 +14,51 @@ const normalizeField = (value, maxLength) => (
 );
 
 const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+const parseRequestBody = (body) => {
+  if (typeof body !== 'string') {
+    return body || {};
+  }
+
+  try {
+    return JSON.parse(body);
+  } catch {
+    return {};
+  }
+};
+
+const getRequestId = (request) => (
+  request.headers?.['x-vercel-id']
+  || request.headers?.['x-request-id']
+  || `local-${Date.now()}`
+);
+
+const maskEmail = (email) => {
+  const [localPart, domain] = String(email).split('@');
+
+  if (!localPart || !domain) {
+    return 'invalid-email';
+  }
+
+  return `${localPart.slice(0, 2)}***@${domain}`;
+};
+
+const parseResendError = async (resendResponse) => {
+  const responseText = await resendResponse.text();
+
+  try {
+    const parsedError = JSON.parse(responseText);
+    return {
+      code: parsedError.name || parsedError.code || 'resend_error',
+      message: parsedError.message || 'Resend rejected the email request.',
+    };
+  } catch {
+    return {
+      code: 'resend_error',
+      message: responseText || 'Resend rejected the email request.',
+    };
+  }
+};
 
 const buildEmailHtml = ({ name, email, interest, message }) => `
   <!doctype html>
@@ -79,7 +124,13 @@ const buildEmailText = ({ name, email, interest, message }) => [
 ].join('\n');
 
 module.exports = async function handler(request, response) {
+  const requestId = getRequestId(request);
+
   if (request.method !== 'POST') {
+    console.warn('[inquiry] Rejected non-POST request.', {
+      requestId,
+      method: request.method,
+    });
     response.setHeader('Allow', 'POST');
     return response.status(405).json({ error: 'Method not allowed.' });
   }
@@ -87,25 +138,62 @@ module.exports = async function handler(request, response) {
   const resendApiKey = process.env.RESEND_API_KEY;
   const inquiryToEmail = process.env.INQUIRY_TO_EMAIL;
 
+  console.info('[inquiry] Request received.', {
+    requestId,
+    hasResendApiKey: Boolean(resendApiKey),
+    hasInquiryToEmail: Boolean(inquiryToEmail),
+  });
+
   if (!resendApiKey || !inquiryToEmail) {
-    console.error('Inquiry email environment variables are not configured.');
+    console.error('[inquiry] Required environment variables are missing.', {
+      requestId,
+      missingResendApiKey: !resendApiKey,
+      missingInquiryToEmail: !inquiryToEmail,
+    });
     return response.status(500).json({
       error: 'Private inquiries are temporarily unavailable. Please try again shortly.',
+      code: 'email_configuration_missing',
+      requestId,
     });
   }
 
-  const name = normalizeField(request.body?.name, 120);
-  const email = normalizeField(request.body?.email, 254);
-  const interest = normalizeField(request.body?.interest, 120);
-  const message = normalizeField(request.body?.message, 3000);
+  const requestBody = parseRequestBody(request.body);
+  const name = normalizeField(requestBody.name, 120);
+  const email = normalizeField(requestBody.email, 254);
+  const interest = normalizeField(requestBody.interest, 120);
+  const message = normalizeField(requestBody.message, 3000);
+
+  console.info('[inquiry] Payload parsed.', {
+    requestId,
+    hasName: Boolean(name),
+    hasEmail: Boolean(email),
+    hasInterest: Boolean(interest),
+    messageLength: message.length,
+  });
 
   if (!name || !isValidEmail(email) || !interest || !message) {
+    console.warn('[inquiry] Payload validation failed.', {
+      requestId,
+      validName: Boolean(name),
+      validEmail: isValidEmail(email),
+      validInterest: Boolean(interest),
+      validMessage: Boolean(message),
+    });
     return response.status(400).json({
       error: 'Please complete every field with valid information.',
+      code: 'invalid_inquiry',
+      requestId,
     });
   }
 
   try {
+    console.info('[inquiry] Sending email through Resend.', {
+      requestId,
+      from: FROM_EMAIL,
+      to: maskEmail(inquiryToEmail),
+      replyTo: maskEmail(email),
+    });
+
     const resendResponse = await fetch(RESEND_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -123,18 +211,39 @@ module.exports = async function handler(request, response) {
     });
 
     if (!resendResponse.ok) {
-      const resendError = await resendResponse.text();
-      console.error('Resend inquiry delivery failed:', resendResponse.status, resendError);
+      const resendError = await parseResendError(resendResponse);
+      console.error('[inquiry] Resend rejected the email.', {
+        requestId,
+        status: resendResponse.status,
+        code: resendError.code,
+        message: resendError.message,
+      });
       return response.status(502).json({
         error: 'We could not deliver your inquiry. Please try again in a moment.',
+        code: resendError.code,
+        requestId,
       });
     }
 
-    return response.status(200).json({ success: true });
+    const resendResult = await resendResponse.json().catch(() => ({}));
+    console.info('[inquiry] Email accepted by Resend.', {
+      requestId,
+      emailId: resendResult.id || 'not-returned',
+    });
+
+    return response.status(200).json({
+      success: true,
+      requestId,
+    });
   } catch (error) {
-    console.error('Inquiry delivery error:', error);
+    console.error('[inquiry] Resend request failed.', {
+      requestId,
+      message: error instanceof Error ? error.message : 'Unknown delivery error.',
+    });
     return response.status(502).json({
       error: 'We could not deliver your inquiry. Please try again in a moment.',
+      code: 'resend_request_failed',
+      requestId,
     });
   }
 };
