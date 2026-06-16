@@ -3,17 +3,59 @@ import { ArrowDown, ArrowUpRight, Check, LoaderCircle, LockKeyhole } from 'lucid
 import './ComingSoon.css';
 
 const services = [
-  ['01', 'Estate Operations'],
-  ['02', 'Staff Coordination'],
-  ['03', 'Property Oversight'],
-  ['04', 'Vendor Management'],
-  ['05', 'Travel & Hospitality'],
-  ['06', 'Security & Privacy'],
+  {
+    number: '01',
+    title: 'Estate Management',
+    description: 'Oversight and coordination for exceptional residences.',
+    details: [
+      'Property inspections',
+      'Maintenance coordination',
+      'Vendor oversight',
+      'Hurricane readiness',
+      'Project supervision',
+    ],
+  },
+  {
+    number: '02',
+    title: 'Household Administration',
+    description: 'Coordinating the people, schedules, and services that keep a household running smoothly.',
+    details: [
+      'Staff coordination',
+      'Scheduling',
+      'Deliveries',
+      'Guest preparation',
+      'Household logistics',
+    ],
+  },
+  {
+    number: '03',
+    title: 'Lifestyle Coordination',
+    description: 'Discreet support for travel, entertaining, and daily life.',
+    details: [
+      'Travel',
+      'Reservations',
+      'Entertaining',
+      'Guest services',
+      'Local experiences',
+    ],
+  },
+  {
+    number: '04',
+    title: 'Asset Oversight',
+    description: 'Management of the assets that accompany exceptional living.',
+    details: [
+      'Yacht coordination',
+      'Vehicle services',
+      'Aviation support',
+      'Specialty vendors',
+    ],
+  },
 ];
 
 const ComingSoon = () => {
   const [formStatus, setFormStatus] = useState('idle');
   const [formError, setFormError] = useState('');
+  const [openService, setOpenService] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -126,13 +168,43 @@ const ComingSoon = () => {
           <h2 id="services-title">Quietly comprehensive.</h2>
         </div>
         <div className="service-list">
-          {services.map(([number, title]) => (
-            <div className="service-row" key={title}>
-              <span>{number}</span>
-              <h3>{title}</h3>
-              <span className="service-mark" aria-hidden="true">+</span>
-            </div>
-          ))}
+          {services.map((service, index) => {
+            const isOpen = openService === index;
+            const panelId = `service-panel-${index}`;
+            const buttonId = `service-trigger-${index}`;
+
+            return (
+              <div className="service-item" key={service.title} data-open={isOpen}>
+                <button
+                  id={buttonId}
+                  className="service-row"
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => setOpenService(isOpen ? null : index)}
+                >
+                  <span className="service-number">{service.number}</span>
+                  <span className="service-summary">
+                    <span className="service-title">{service.title}</span>
+                    <span className="service-description">{service.description}</span>
+                  </span>
+                  <span className="service-mark" aria-hidden="true">+</span>
+                </button>
+                <div
+                  id={panelId}
+                  className="service-panel"
+                  role="region"
+                  aria-labelledby={buttonId}
+                >
+                  <ul>
+                    {service.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
