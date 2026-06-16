@@ -177,7 +177,7 @@ const ComingSoon = () => {
       <section className="services section-shell" aria-labelledby="services-title">
         <div className="services-intro">
           <p className="section-label">Scope of Service</p>
-          <h2 id="services-title">Estate office scope, quietly held.</h2>
+          <h2 id="services-title">Quietly comprehensive.</h2>
         </div>
         <div className="service-list">
           {services.map((service, index) => {
