@@ -28,7 +28,7 @@ const DashboardLayout = ({ children, user, onLogout, theme, setTheme, basePath =
               <Building2 size={24} strokeWidth={1.5} className="text-luxury-gold" />
               <div>
                 <h1 className="text-xl font-heading font-light text-luxury-white">Neapolitan</h1>
-                <p className="text-xs uppercase tracking-[0.2em] text-luxury-white/40">Concierge</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-luxury-white/40">Estate Office</p>
               </div>
             </div>
           </div>

@@ -55,10 +55,10 @@ const VendorsPage = () => {
       {/* Header */}
       <div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-light tracking-tight text-luxury-white">
-          Vendor Network
+          Provider Network
         </h1>
         <p className="text-sm uppercase tracking-[0.2em] text-luxury-white/60 mt-2">
-          Vetted Service Providers
+          Vetted Estate Partners
         </p>
       </div>
 
@@ -121,7 +121,7 @@ const VendorsPage = () => {
 
             {vendor.services && vendor.services.length > 0 && (
               <div className="mb-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-luxury-white/40 mb-2">Services</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-luxury-white/40 mb-2">Scope</p>
                 <div className="flex flex-wrap gap-2">
                   {vendor.services.map((service, idx) => (
                     <span key={idx} className="text-xs text-luxury-white/60 px-2 py-1 rounded-sm bg-luxury-surface">
@@ -140,7 +140,7 @@ const VendorsPage = () => {
                 </div>
               )}
               <button data-testid={`book-vendor-${vendor.id}`} className="luxury-button-primary px-4 py-2 text-xs uppercase tracking-[0.2em] rounded-sm">
-                Book Service
+                Coordinate
               </button>
             </div>
           </div>

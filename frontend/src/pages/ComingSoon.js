@@ -18,7 +18,7 @@ const services = [
   {
     number: '02',
     title: 'Household Administration',
-    description: 'Coordinating the people, schedules, and services that keep a household running smoothly.',
+    description: 'Continuity across the people, schedules, and household logistics behind daily estate life.',
     details: [
       'Staff coordination',
       'Scheduling',
@@ -30,7 +30,7 @@ const services = [
   {
     number: '03',
     title: 'Lifestyle Coordination',
-    description: 'Discreet support for travel, entertaining, and daily life.',
+    description: 'Discreet management of travel, entertaining, arrivals, and in-residence experiences.',
     details: [
       'Travel',
       'Reservations',
@@ -42,7 +42,7 @@ const services = [
   {
     number: '04',
     title: 'Asset Oversight',
-    description: 'Management of the assets that accompany exceptional living.',
+    description: 'Coordination for the assets and specialist providers that accompany exceptional homes.',
     details: [
       'Yacht coordination',
       'Vehicle services',
@@ -121,13 +121,13 @@ const ComingSoon = () => {
         <div className="hero-content">
           <p className="eyebrow reveal reveal-one">Private Estate Office · Naples Waterfront Estates</p>
           <h1 className="reveal reveal-two">
-            The Operating System
+            A Private Estate Office
             <br />
-            for <em>Exceptional Living.</em>
+            for <em>Exceptional Homes.</em>
           </h1>
           <p className="hero-copy reveal reveal-three">
-            Private estate management for homeowners who expect seamless oversight
-            of their properties, vendors, and lifestyle needs.
+            Estate and lifestyle management for homeowners who expect oversight,
+            readiness, and continuity across every residence, vendor, and arrival.
           </p>
           <div className="hero-actions reveal reveal-four">
             <a className="button button-primary" href="#inquiry">
@@ -135,7 +135,7 @@ const ComingSoon = () => {
               <ArrowUpRight size={16} strokeWidth={1.4} />
             </a>
             <a className="button button-secondary" href="#inquiry">
-              Apply for Membership
+              Discuss Estate Oversight
             </a>
           </div>
           <p className="hero-location reveal reveal-five">
@@ -153,11 +153,23 @@ const ComingSoon = () => {
       <section className="positioning section-shell" id="office">
         <p className="section-label">The Private Office</p>
         <div className="positioning-copy">
-          <h2>One trusted point of command for a life in motion.</h2>
+          <h2>One trusted point of coordination for a life in motion.</h2>
           <p>
-            We oversee the details that should never require your attention, bringing
-            the rigor of a private estate office to waterfront residences, trusted
-            vendors, and the daily operation of your world.
+            We bring the discipline of a private estate office to waterfront residences,
+            trusted providers, household logistics, and the daily rhythm of life in Naples.
+          </p>
+        </div>
+      </section>
+
+      <section className="modern-office section-shell" aria-labelledby="modern-office-title">
+        <p className="section-label">The Modern Private Estate Office</p>
+        <div className="modern-office-copy">
+          <h2 id="modern-office-title">Continuity across residences, providers, and plans.</h2>
+          <p>
+            Today’s homeowners often move between residences, service providers, projects,
+            travel schedules, and household logistics. Neapolitan Concierge serves as a
+            single point of coordination, providing discreet oversight and continuity
+            across estate and lifestyle management.
           </p>
         </div>
       </section>
@@ -165,7 +177,7 @@ const ComingSoon = () => {
       <section className="services section-shell" aria-labelledby="services-title">
         <div className="services-intro">
           <p className="section-label">Scope of Service</p>
-          <h2 id="services-title">Quietly comprehensive.</h2>
+          <h2 id="services-title">Estate office scope, quietly held.</h2>
         </div>
         <div className="service-list">
           {services.map((service, index) => {
@@ -218,8 +230,8 @@ const ComingSoon = () => {
             It is the foundation.”
           </blockquote>
           <p className="trust-copy">
-            Invitation-led relationships. Vetted partners. Confidential operations for
-            Naples households that value privacy, continuity, and impeccable oversight.
+            Invitation-led relationships. Vetted providers. Confidential oversight for
+            Naples households that value privacy, continuity, and considered execution.
           </p>
         </div>
       </section>
@@ -229,8 +241,8 @@ const ComingSoon = () => {
           <p className="section-label">Private Consultation</p>
           <h2>Begin a confidential conversation.</h2>
           <p>
-            For Naples homeowners and select Southwest Florida clients. Introductions
-            are considered personally.
+            For Naples homeowners seeking a private estate office model for oversight,
+            readiness, and continuity.
           </p>
         </div>
 
@@ -256,12 +268,13 @@ const ComingSoon = () => {
               <input name="email" type="email" autoComplete="email" required />
             </label>
             <label className="form-wide">
-              <span>How may we assist?</span>
+              <span>Area of oversight</span>
               <select name="interest" defaultValue="" required>
-                <option value="" disabled>Select an area of interest</option>
+                <option value="" disabled>Select an area of focus</option>
                 <option>Estate Management</option>
-                <option>Lifestyle Management</option>
-                <option>Membership</option>
+                <option>Household Administration</option>
+                <option>Lifestyle Coordination</option>
+                <option>Asset Oversight</option>
                 <option>Private Consultation</option>
               </select>
             </label>
@@ -270,7 +283,7 @@ const ComingSoon = () => {
               <textarea
                 name="message"
                 rows="4"
-                placeholder="Share a brief note about how we may assist."
+                placeholder="Share what your estate office should understand."
                 required
               />
             </label>

@@ -67,16 +67,16 @@ const LifestylePage = () => {
       <div className="flex items-end justify-between">
         <div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-light tracking-tight text-luxury-white">
-            Lifestyle & Events
+            Lifestyle Coordination
           </h1>
           <p className="text-sm uppercase tracking-[0.2em] text-luxury-white/60 mt-2">
-            Your Personal Calendar
+            Travel, Guests, and Estate Readiness
           </p>
         </div>
 
         <button data-testid="add-event-button" className="luxury-button-primary px-6 py-3 rounded-sm flex items-center space-x-2">
           <Plus size={18} strokeWidth={1.5} />
-          <span className="text-xs uppercase tracking-[0.2em]">Add Event</span>
+          <span className="text-xs uppercase tracking-[0.2em]">Add Plan</span>
         </button>
       </div>
 

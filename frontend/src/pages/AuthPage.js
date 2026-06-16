@@ -43,7 +43,7 @@ const AuthPage = ({ onLogin }) => {
             </h1>
           </div>
           <p className="text-sm uppercase tracking-[0.2em] text-luxury-white/60">
-            Concierge Command
+            Private Estate Office
           </p>
         </div>
 
