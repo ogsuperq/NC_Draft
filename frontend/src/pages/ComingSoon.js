@@ -77,15 +77,15 @@ const ComingSoon = () => {
 
       <section className="hero" id="top">
         <div className="hero-content">
-          <p className="eyebrow reveal reveal-one">Private Estate Office · Naples, Florida</p>
+          <p className="eyebrow reveal reveal-one">Private Estate Office · Naples Waterfront Estates</p>
           <h1 className="reveal reveal-two">
             The Operating System
             <br />
             for <em>Exceptional Living.</em>
           </h1>
           <p className="hero-copy reveal reveal-three">
-            Private estate and lifestyle management for clients who expect seamless
-            execution across every residence, asset, and experience.
+            Private estate management for homeowners who expect seamless oversight
+            of their properties, vendors, and lifestyle needs.
           </p>
           <div className="hero-actions reveal reveal-four">
             <a className="button button-primary" href="#inquiry">
@@ -96,6 +96,10 @@ const ComingSoon = () => {
               Apply for Membership
             </a>
           </div>
+          <p className="hero-location reveal reveal-five">
+            Serving Naples, Port Royal, Aqualane Shores, Old Naples, and select private
+            clients throughout Southwest Florida.
+          </p>
         </div>
 
         <a className="scroll-cue" href="#office" aria-label="Discover more">
@@ -110,7 +114,8 @@ const ComingSoon = () => {
           <h2>One trusted point of command for a life in motion.</h2>
           <p>
             We oversee the details that should never require your attention, bringing
-            the rigor of a family office to the daily operation of your world.
+            the rigor of a private estate office to waterfront residences, trusted
+            vendors, and the daily operation of your world.
           </p>
         </div>
       </section>
@@ -141,8 +146,8 @@ const ComingSoon = () => {
             It is the foundation.”
           </blockquote>
           <p className="trust-copy">
-            Invitation-led relationships. Vetted partners. Confidential operations
-            structured around your standards and preferences.
+            Invitation-led relationships. Vetted partners. Confidential operations for
+            Naples households that value privacy, continuity, and impeccable oversight.
           </p>
         </div>
       </section>
@@ -151,7 +156,10 @@ const ComingSoon = () => {
         <div className="inquiry-heading">
           <p className="section-label">Private Consultation</p>
           <h2>Begin a confidential conversation.</h2>
-          <p>Membership is limited. Introductions are considered personally.</p>
+          <p>
+            For Naples homeowners and select Southwest Florida clients. Introductions
+            are considered personally.
+          </p>
         </div>
 
         {formStatus === 'success' ? (
@@ -223,7 +231,7 @@ const ComingSoon = () => {
       <footer className="public-footer">
         <div className="footer-mark">NC</div>
         <p>Neapolitan Concierge</p>
-        <span>Naples · New York · Global</span>
+        <span>Naples · Port Royal · Southwest Florida</span>
         <small>© {new Date().getFullYear()} Neapolitan Concierge. By invitation.</small>
       </footer>
     </main>
