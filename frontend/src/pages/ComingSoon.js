@@ -121,7 +121,7 @@ const ComingSoon = () => {
         <div className="hero-content">
           <p className="eyebrow reveal reveal-one">Private Estate Office · Naples Waterfront Estates</p>
           <h1 className="reveal reveal-two">
-            A Private Estate Office
+            A Private Estate Office{' '}
             <br />
             for <em>Exceptional Homes.</em>
           </h1>
@@ -225,7 +225,7 @@ const ComingSoon = () => {
           <LockKeyhole size={24} strokeWidth={1.1} />
           <p className="section-label">Discretion by Design</p>
           <blockquote>
-            “Your privacy is not a feature of our service.
+            “Your privacy is not a feature of our service.{' '}
             <br />
             It is the foundation.”
           </blockquote>
