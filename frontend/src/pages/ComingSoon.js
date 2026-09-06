@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowDown, ArrowUpRight, Check, LoaderCircle, LockKeyhole } from 'lucide-react';
+import { ArrowUpRight, Check, LoaderCircle, LockKeyhole } from 'lucide-react';
+import estateInteriorImage from '../assets/images/naples-estate-interior-v2.png';
 import './ComingSoon.css';
 
 const services = [
@@ -105,64 +106,83 @@ const ComingSoon = () => {
     <main className="coming-soon">
       <header className="public-header">
         <a className="wordmark" href="#top" aria-label="Neapolitan Concierge home">
-          <span className="monogram">NC</span>
+          <span className="monogram" aria-hidden="true">
+            <span>N</span>
+            <span>C</span>
+          </span>
           <span className="wordmark-text">
-            <strong>Neapolitan</strong>
-            <small>Concierge</small>
+            <strong>Neapolitan Concierge</strong>
+            <small>Private Estate Curator</small>
           </span>
         </a>
+        <nav className="public-nav" aria-label="Public navigation">
+          <a href="#office">Our approach</a>
+          <a href="#services">Services</a>
+          <a href="#office">About</a>
+          <a href="#inquiry">Contact</a>
+        </nav>
         <a className="header-link" href="#inquiry">
-          Private inquiries
-          <ArrowUpRight size={14} strokeWidth={1.4} />
+          <span className="header-link-desktop">Private inquiry</span>
+          <span className="header-link-mobile">Inquire</span>
         </a>
       </header>
 
       <section className="hero" id="top">
+        <div className="hero-media" aria-hidden="true" />
         <div className="hero-content">
-          <p className="eyebrow reveal reveal-one">Private Estate Office · Naples Waterfront Estates</p>
+          <p className="eyebrow reveal reveal-one">Exceptional homes. A more curated life.</p>
           <h1 className="reveal reveal-two">
-            A Private Estate Office{' '}
+            A Private Estate Curator
             <br />
-            for <em>Exceptional Homes.</em>
+            for Life in Naples.
           </h1>
           <p className="hero-copy reveal reveal-three">
-            Estate and lifestyle management for homeowners who expect oversight,
-            readiness, and continuity across every residence, vendor, and arrival.
+            Discreet, deeply local stewardship for your private world, with every detail
+            considered.
           </p>
           <div className="hero-actions reveal reveal-four">
             <a className="button button-primary" href="#inquiry">
-              Request Private Consultation
+              Inquire now
               <ArrowUpRight size={16} strokeWidth={1.4} />
             </a>
-            <a className="button button-secondary" href="#inquiry">
-              Discuss Estate Oversight
-            </a>
           </div>
-          <p className="hero-location reveal reveal-five">
-            Serving Naples, Port Royal, Aqualane Shores, Old Naples, and select private
-            clients throughout Southwest Florida.
-          </p>
         </div>
 
-        <a className="scroll-cue" href="#office" aria-label="Discover more">
-          <span>Discover</span>
-          <ArrowDown size={15} strokeWidth={1.2} />
-        </a>
+        <div className="hero-signature" aria-hidden="true">
+          <span>Homes</span>
+          <span>Lifestyle</span>
+          <span>Assets</span>
+          <span>Naples</span>
+        </div>
       </section>
 
-      <section className="positioning section-shell" id="office">
-        <p className="section-label">The Private Office</p>
+      <div className="curator-strip" aria-label="Private estate curator scope">
+        <div><span>01</span><strong>Estate Management</strong></div>
+        <div><span>02</span><strong>Household Administration</strong></div>
+        <div><span>03</span><strong>Lifestyle Coordination</strong></div>
+        <div><span>04</span><strong>Asset Oversight</strong></div>
+      </div>
+
+      <section className="positioning" id="office">
+        <div className="positioning-image" aria-hidden="true">
+          <img src={estateInteriorImage} alt="" />
+        </div>
         <div className="positioning-copy">
-          <h2>One trusted point of coordination for a life in motion.</h2>
+          <p className="section-label">A more considered way</p>
+          <h2>Quietly comprehensive.<br />Always personal.</h2>
           <p>
-            We bring the discipline of a private estate office to waterfront residences,
-            trusted providers, household logistics, and the daily rhythm of life in Naples.
+            A considered presence behind the private world you have built, so life in Naples
+            feels as effortless as it appears.
           </p>
+          <a className="positioning-link" href="#services">
+            Our approach
+            <ArrowUpRight size={15} strokeWidth={1.3} />
+          </a>
         </div>
       </section>
 
       <section className="modern-office section-shell" aria-labelledby="modern-office-title">
-        <p className="section-label">The Modern Private Estate Office</p>
+        <p className="section-label">The Modern Private Estate Curator</p>
         <div className="modern-office-copy">
           <h2 id="modern-office-title">Continuity across residences, providers, and plans.</h2>
           <p>
@@ -174,7 +194,7 @@ const ComingSoon = () => {
         </div>
       </section>
 
-      <section className="services section-shell" aria-labelledby="services-title">
+      <section className="services section-shell" id="services" aria-labelledby="services-title">
         <div className="services-intro">
           <p className="section-label">Scope of Service</p>
           <h2 id="services-title">Quietly comprehensive.</h2>
@@ -241,7 +261,7 @@ const ComingSoon = () => {
           <p className="section-label">Private Consultation</p>
           <h2>Begin a confidential conversation.</h2>
           <p>
-            For Naples homeowners seeking a private estate office model for oversight,
+            For Naples homeowners seeking a private estate curator for oversight,
             readiness, and continuity.
           </p>
         </div>
