@@ -1,6 +1,14 @@
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 const SUBJECT = 'New Private Inquiry — Neapolitan Concierge';
 const FROM_EMAIL = 'Neapolitan Concierge <inquiries@neapolitanconcierge.com>';
+const AREAS_OF_OVERSIGHT = new Set([
+  'Estate Management',
+  'Household Administration',
+  'Lifestyle Coordination',
+  'Asset Oversight',
+  'Multiple Areas',
+  'Something Else',
+]);
 
 const escapeHtml = (value) => String(value)
   .replaceAll('&', '&amp;')
@@ -60,7 +68,7 @@ const parseResendError = async (resendResponse) => {
   }
 };
 
-const buildEmailHtml = ({ name, email, interest, message }) => `
+const buildEmailHtml = ({ name, email, areaOfOversight, message }) => `
   <!doctype html>
   <html lang="en">
     <body style="margin:0;background:#f8f6f2;color:#191816;font-family:Arial,sans-serif;">
@@ -91,16 +99,18 @@ const buildEmailHtml = ({ name, email, interest, message }) => `
                     </tr>
                     <tr>
                       <td style="padding:0 0 22px;">
-                        <p style="margin:0 0 6px;color:#9b7f45;font-size:10px;letter-spacing:2px;text-transform:uppercase;">Area of Interest</p>
-                        <p style="margin:0;font-size:16px;line-height:1.6;">${escapeHtml(interest)}</p>
+                        <p style="margin:0 0 6px;color:#9b7f45;font-size:10px;letter-spacing:2px;text-transform:uppercase;">Area of Oversight</p>
+                        <p style="margin:0;font-size:16px;line-height:1.6;">${escapeHtml(areaOfOversight)}</p>
                       </td>
                     </tr>
+                    ${message ? `
                     <tr>
                       <td>
                         <p style="margin:0 0 10px;color:#9b7f45;font-size:10px;letter-spacing:2px;text-transform:uppercase;">Message</p>
                         <div style="padding:20px 22px;background:#f8f6f2;border-left:2px solid #c6a96b;font-size:15px;line-height:1.8;white-space:pre-wrap;">${escapeHtml(message)}</div>
                       </td>
                     </tr>
+                    ` : ''}
                   </table>
                 </td>
               </tr>
@@ -112,15 +122,13 @@ const buildEmailHtml = ({ name, email, interest, message }) => `
   </html>
 `;
 
-const buildEmailText = ({ name, email, interest, message }) => [
+const buildEmailText = ({ name, email, areaOfOversight, message }) => [
   'New Private Inquiry — Neapolitan Concierge',
   '',
   `Name: ${name}`,
   `Email: ${email}`,
-  `Area of interest: ${interest}`,
-  '',
-  'Message:',
-  message,
+  `Area of Oversight: ${areaOfOversight}`,
+  ...(message ? ['', 'Message:', message] : []),
 ].join('\n');
 
 module.exports = async function handler(request, response) {
@@ -160,27 +168,29 @@ module.exports = async function handler(request, response) {
   const requestBody = parseRequestBody(request.body);
   const name = normalizeField(requestBody.name, 120);
   const email = normalizeField(requestBody.email, 254);
-  const interest = normalizeField(requestBody.interest, 120);
+  const areaOfOversight = normalizeField(
+    requestBody.areaOfOversight ?? requestBody.interest,
+    120
+  );
   const message = normalizeField(requestBody.message, 3000);
 
   console.info('[inquiry] Payload parsed.', {
     requestId,
     hasName: Boolean(name),
     hasEmail: Boolean(email),
-    hasInterest: Boolean(interest),
+    hasAreaOfOversight: Boolean(areaOfOversight),
     messageLength: message.length,
   });
 
-  if (!name || !isValidEmail(email) || !interest || !message) {
+  if (!name || !isValidEmail(email) || !AREAS_OF_OVERSIGHT.has(areaOfOversight)) {
     console.warn('[inquiry] Payload validation failed.', {
       requestId,
       validName: Boolean(name),
       validEmail: isValidEmail(email),
-      validInterest: Boolean(interest),
-      validMessage: Boolean(message),
+      validAreaOfOversight: AREAS_OF_OVERSIGHT.has(areaOfOversight),
     });
     return response.status(400).json({
-      error: 'Please complete every field with valid information.',
+      error: 'Please provide a valid name, email address, and area of oversight.',
       code: 'invalid_inquiry',
       requestId,
     });
@@ -205,8 +215,8 @@ module.exports = async function handler(request, response) {
         to: [inquiryToEmail],
         reply_to: email,
         subject: SUBJECT,
-        html: buildEmailHtml({ name, email, interest, message }),
-        text: buildEmailText({ name, email, interest, message }),
+        html: buildEmailHtml({ name, email, areaOfOversight, message }),
+        text: buildEmailText({ name, email, areaOfOversight, message }),
       }),
     });
 

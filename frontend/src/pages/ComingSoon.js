@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Check, LoaderCircle, LockKeyhole } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, LoaderCircle, LockKeyhole } from 'lucide-react';
+import estateArrivalImage from '../assets/images/estate-arrival-table-v2.png';
 import estateInteriorImage from '../assets/images/naples-estate-interior-v2.png';
 import './ComingSoon.css';
 
 const services = [
   {
-    number: '01',
     title: 'Estate Management',
     description: 'Oversight and coordination for exceptional residences.',
     details: [
@@ -17,7 +17,6 @@ const services = [
     ],
   },
   {
-    number: '02',
     title: 'Household Administration',
     description: 'Continuity across the people, schedules, and household logistics behind daily estate life.',
     details: [
@@ -29,7 +28,6 @@ const services = [
     ],
   },
   {
-    number: '03',
     title: 'Lifestyle Coordination',
     description: 'Discreet management of travel, entertaining, arrivals, and in-residence experiences.',
     details: [
@@ -41,9 +39,8 @@ const services = [
     ],
   },
   {
-    number: '04',
     title: 'Asset Oversight',
-    description: 'Coordination for the assets and specialist providers that accompany exceptional homes.',
+    description: 'Coordination of private assets and the specialist providers who support them.',
     details: [
       'Yacht coordination',
       'Vehicle services',
@@ -76,7 +73,7 @@ const ComingSoon = () => {
         body: JSON.stringify({
           name: formData.get('name'),
           email: formData.get('email'),
-          interest: formData.get('interest'),
+          areaOfOversight: formData.get('areaOfOversight'),
           message: formData.get('message'),
         }),
       });
@@ -157,10 +154,10 @@ const ComingSoon = () => {
       </section>
 
       <div className="curator-strip" aria-label="Private estate curator scope">
-        <div><span>01</span><strong>Estate Management</strong></div>
-        <div><span>02</span><strong>Household Administration</strong></div>
-        <div><span>03</span><strong>Lifestyle Coordination</strong></div>
-        <div><span>04</span><strong>Asset Oversight</strong></div>
+        <div><strong>Estate Management</strong></div>
+        <div><strong>Household Administration</strong></div>
+        <div><strong>Lifestyle Coordination</strong></div>
+        <div><strong>Asset Oversight</strong></div>
       </div>
 
       <section className="positioning" id="office">
@@ -181,23 +178,37 @@ const ComingSoon = () => {
         </div>
       </section>
 
-      <section className="modern-office section-shell" aria-labelledby="modern-office-title">
-        <p className="section-label">The Modern Private Estate Curator</p>
-        <div className="modern-office-copy">
-          <h2 id="modern-office-title">Continuity across residences, providers, and plans.</h2>
-          <p>
-            Today’s homeowners often move between residences, service providers, projects,
-            travel schedules, and household logistics. Neapolitan Concierge serves as a
-            single point of coordination, providing discreet oversight and continuity
-            across estate and lifestyle management.
+      <section className="curator-philosophy" aria-labelledby="curator-philosophy-title">
+        <div className="curator-philosophy-copy">
+          <p className="section-label">The Private Estate Curator</p>
+          <h2 id="curator-philosophy-title">Before you ask.</h2>
+          <p className="curator-philosophy-lede">
+            The most considered service happens before it needs to be requested.
           </p>
+          <p className="curator-philosophy-body">
+            A residence prepared before arrival. A preference remembered. Maintenance
+            addressed before it becomes an interruption. Guests anticipated. Trusted
+            resources already in place. The details of private life considered quietly,
+            continuously, and often invisibly.
+          </p>
+          <p className="curator-philosophy-close">The luxury of not having to ask.</p>
         </div>
+        <figure className="curator-philosophy-image">
+          <img
+            src={estateArrivalImage}
+            alt="A waterfront estate table prepared with linen and white florals"
+          />
+        </figure>
       </section>
 
       <section className="services section-shell" id="services" aria-labelledby="services-title">
         <div className="services-intro">
           <p className="section-label">Scope of Service</p>
-          <h2 id="services-title">Quietly comprehensive.</h2>
+          <h2 id="services-title">
+            Your private world,
+            <br />
+            considered in full.
+          </h2>
         </div>
         <div className="service-list">
           {services.map((service, index) => {
@@ -215,7 +226,6 @@ const ComingSoon = () => {
                   aria-controls={panelId}
                   onClick={() => setOpenService(isOpen ? null : index)}
                 >
-                  <span className="service-number">{service.number}</span>
                   <span className="service-summary">
                     <span className="service-title">{service.title}</span>
                     <span className="service-description">{service.description}</span>
@@ -250,20 +260,16 @@ const ComingSoon = () => {
             It is the foundation.”
           </blockquote>
           <p className="trust-copy">
-            Invitation-led relationships. Vetted providers. Confidential oversight for
-            Naples households that value privacy, continuity, and considered execution.
+            Trusted relationships. Considered access. An understanding that what is yours
+            remains yours.
           </p>
         </div>
       </section>
 
       <section className="inquiry section-shell" id="inquiry">
         <div className="inquiry-heading">
-          <p className="section-label">Private Consultation</p>
+          <p className="section-label">Private Inquiry</p>
           <h2>Begin a confidential conversation.</h2>
-          <p>
-            For Naples homeowners seeking a private estate curator for oversight,
-            readiness, and continuity.
-          </p>
         </div>
 
         {formStatus === 'success' ? (
@@ -289,22 +295,21 @@ const ComingSoon = () => {
             </label>
             <label className="form-wide">
               <span>Area of oversight</span>
-              <select name="interest" defaultValue="" required>
-                <option value="" disabled>Select an area of focus</option>
+              <select name="areaOfOversight" defaultValue="" required>
+                <option value="" disabled>Select an area of oversight</option>
                 <option>Estate Management</option>
                 <option>Household Administration</option>
                 <option>Lifestyle Coordination</option>
                 <option>Asset Oversight</option>
-                <option>Private Consultation</option>
+                <option>Multiple Areas</option>
+                <option>Something Else</option>
               </select>
             </label>
             <label className="form-wide">
-              <span>Message</span>
+              <span>Message (optional)</span>
               <textarea
                 name="message"
                 rows="4"
-                placeholder="Share what your estate office should understand."
-                required
               />
             </label>
             {formStatus === 'error' && (
@@ -324,8 +329,8 @@ const ComingSoon = () => {
                 </>
               ) : (
                 <>
-                  Submit Private Inquiry
-                  <ArrowUpRight size={16} strokeWidth={1.4} />
+                  Send Private Inquiry
+                  <ArrowRight size={16} strokeWidth={1.4} />
                 </>
               )}
             </button>
@@ -337,7 +342,7 @@ const ComingSoon = () => {
         <div className="footer-mark">NC</div>
         <p>Neapolitan Concierge</p>
         <span>Naples · Port Royal · Southwest Florida</span>
-        <small>© {new Date().getFullYear()} Neapolitan Concierge. By invitation.</small>
+        <small>© {new Date().getFullYear()} Neapolitan Concierge.</small>
       </footer>
     </main>
   );
