@@ -339,8 +339,16 @@ const ComingSoon = () => {
       </section>
 
       <footer className="public-footer">
-        <div className="footer-mark">NC</div>
-        <p>Neapolitan Concierge</p>
+        <div className="wordmark footer-wordmark" aria-label="Neapolitan Concierge">
+          <span className="monogram" aria-hidden="true">
+            <span>N</span>
+            <span>C</span>
+          </span>
+          <span className="wordmark-text">
+            <strong>Neapolitan Concierge</strong>
+            <small>Private Estate Curator</small>
+          </span>
+        </div>
         <span>Naples · Port Royal · Southwest Florida</span>
         <small>© {new Date().getFullYear()} Neapolitan Concierge.</small>
       </footer>
